@@ -11,10 +11,12 @@
 ## Setup
 **Clone Repository**
 ```bash
-$ git clone https://github.com/PepeWarrior69/aqm-sensor-client.git
-$ cd aqm-sensor-client
+git clone https://github.com/PepeWarrior69/aqm-sensor-client.git
+```
+```bash
+cd aqm-sensor-client
 ```
 **Install Dependencies**
 ```bash
-$ pip3 install -e
+pip3 install -e
 ```
