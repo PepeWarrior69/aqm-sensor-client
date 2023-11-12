@@ -1,5 +1,4 @@
 # AQM-SENSOR-CLIENT
-
 **This software is running on Raspberry Pi**
 
 ### Area Of Responsibility
@@ -19,4 +18,12 @@ cd aqm-sensor-client
 **Install Dependencies**
 ```bash
 pip3 install -e
+```
+
+## Configuration
+**Create .env file in the root and setup desired values**
+```bash
+BACKEND_IP=127.0.0.1
+BACKEND_PORT=5000
+MEASUREMENT_FREQUENCY_MS=10000
 ```
