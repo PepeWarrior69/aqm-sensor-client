@@ -21,7 +21,7 @@ cd aqm-sensor-client
 ```
 **Install Dependencies**
 ```bash
-pip3 install -e
+pip install -r requirements.txt
 ```
 
 ## Configuration
