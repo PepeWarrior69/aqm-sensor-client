@@ -44,6 +44,7 @@ class PlatformClientStrategy(ABC):
     
     def send_packet(self):
         try:
+            print("self.packet.packet_data = ", json.dumps(self.packet.packet_data, indent=2))
             data = json.dumps(self.packet.packet_data)
             self.packet = Packet(self.mac, self.ip)
             

@@ -1,21 +1,20 @@
+from factory.platform import PlatformClientFactory, TestLinuxClientFactory, TestWindowsClientFactory, RaspberryClientFactory, ArduineClientFactory
 from strategy.context.PlatformContext import PlatformContext
-from strategy.platform import PlatformClientStrategy, TestLinuxClientStrategy, TestWindowsClientStrategy, RaspberryClientStrategy, ArduineClientStrategy
 from config import ENDPOINT_URL
 from typing import Dict
 import argparse
 import time
 
-platform_strategy: Dict[str, PlatformClientStrategy] = {
-    "test_linux": TestLinuxClientStrategy,
-    "test_windows": TestWindowsClientStrategy,
-    "raspberry_pi": RaspberryClientStrategy,
-    "arduine": ArduineClientStrategy
+platform_factory: Dict[str, PlatformClientFactory] = {
+    "test_linux": TestLinuxClientFactory(),
+    "test_windows": TestWindowsClientFactory(),
+    "raspberry_pi": RaspberryClientFactory(),
+    "arduine": ArduineClientFactory()
 }
 
 class App:
     def main(self):
         self.parse_arguments()
-        print("platform = ", self.args.platform)
         self.platform_context = PlatformContext(
             self.get_strategy_from_platform(self.args.platform)
         )
@@ -33,10 +32,10 @@ class App:
         self.args = parser.parse_args()
         
     def get_strategy_from_platform(self, platform: str):
-        Strategy = platform_strategy.get(platform, None)
+        if platform in platform_factory:
+            print(f"Creating client for {platform=}")
+            return platform_factory[platform].create_platform_client(ENDPOINT_URL)
         
-        if not Strategy:
-            raise Exception(f"Strategy for platform {platform=} is not found")
+        raise Exception(f"Strategy for platform {platform=} is not supported")
         
-        return Strategy(ENDPOINT_URL)
 
