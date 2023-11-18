@@ -2,6 +2,8 @@ from strategy.platform import PlatformClientStrategy
 import socket
 import uuid
 
+from strategy.sensor import TestSensorStrategy
+
 class TestLinuxClientStrategy(PlatformClientStrategy):    
     @property
     def mac(self):
@@ -21,5 +23,11 @@ class TestLinuxClientStrategy(PlatformClientStrategy):
         except socket.error as e:
             print(f"Error getting IP address: {e}")
             return None
+        
+    def add_connected_sensors(self):
+        for _ in range(5):
+            self.sensors.append(
+                TestSensorStrategy()
+            )
     
     

@@ -1,4 +1,4 @@
-from .abstraction.PlatformClientStrategy import *
+from .abstraction import *
 from .ArduineClientStrategy import *
 from .RaspberryClientStrategy import *
 from .TestLinuxClientStrategy import *

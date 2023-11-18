@@ -1,8 +1,10 @@
 from dataclasses import dataclass, asdict
 from typing import List, Dict, Union
+import uuid
 
 @dataclass
 class PacketData:
+    id: str
     mac: str
     ip: str
     body: Dict[
@@ -14,20 +16,7 @@ class PacketData:
 
 class Packet:
     def __init__(self, mac, ip):
-        # make sure that bg workers won't set any values during cleanup 
-        # if cleaning in process then worker should wait till it's finished and then set data
-        self.is_cleaning = False
-        # self._packet_data = {
-        #     "mac": mac,
-        #     "ip": ip,
-        #     "body": {}
-        # }
-        self._packet_data = PacketData(mac, ip, {})
-    
-    def cleanup(self):
-        self.is_cleaning = True
-        # some reset logic to performm
-        self.is_cleaning = True
+        self._packet_data = PacketData(str(uuid.uuid4()), mac, ip, {})
         
     def add(self, sensor_id: str, type: str, sensor_data: dict):
         body = self._packet_data.body
@@ -39,6 +28,7 @@ class Packet:
             }
         
         body[sensor_id]["data"].append(sensor_data)
+        print(f"Added data to packet {sensor_id=} {type=} {sensor_data=}")
     
     def to_JSON(self) -> dict:
         pass

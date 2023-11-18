@@ -7,8 +7,8 @@ class TestSensorStrategy(SensorStrategy):
     def type(self):
         return "test_sensor"
     
-    def read_data() -> dict:
+    def read_data(self):
         return {
-            "ts": time.time(),
+            "ts": int(time.time()),
             "value": random.randrange(400, 1000)
         }

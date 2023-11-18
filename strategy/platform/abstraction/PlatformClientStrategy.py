@@ -9,6 +9,7 @@ class PlatformClientStrategy(ABC):
         self.sensors: List[SensorStrategy] = []
         self.http = HttpService(url)
         self.packet = Packet(self.mac, self.ip)
+        self.add_connected_sensors()
         
     @property
     @abstractmethod
@@ -20,7 +21,13 @@ class PlatformClientStrategy(ABC):
     def ip() -> str:
         pass
     
+    @abstractmethod
+    def add_connected_sensors(self):
+        pass
+
+    
     def read(self) -> bool:
+        print(f"Attempt to read data from sensors{{{ len(self.sensors) }}}")
         has_failed_read = False
         
         for sensor in self.sensors:
@@ -29,15 +36,17 @@ class PlatformClientStrategy(ABC):
                 self.packet.add(sensor.id, sensor.type, data)
             except Exception as err:
                 print(f"Failed to read data {err=}")
-                print(f"Failed to read data for {sensor=}")
+                print(f"Failed to read data for {sensor.id=} {sensor.type=}")
                 has_failed_read = True
         
         return has_failed_read
     
     def send_packet(self):
         try:
-            if self.http.post(self.packet.to_JSON()):
-                self.packet = Packet(self.mac, self.ip)
+            packet = self.packet.packet_data
+            self.packet = Packet(self.mac, self.ip)
+            
+            if self.http.post(packet):
                 
                 return True
         except Exception as err:

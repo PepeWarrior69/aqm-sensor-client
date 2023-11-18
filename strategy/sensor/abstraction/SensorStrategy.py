@@ -11,6 +11,6 @@ class SensorStrategy(ABC):
         pass
     
     @abstractmethod
-    def read_data() -> dict:
+    def read_data(self) -> dict:
         pass
     
