@@ -1,18 +1,17 @@
 from strategy.platform import PlatformClientStrategy
 import socket
+import uuid
 
 from strategy.sensor import TestSensorStrategy
 
-class TestLinuxClientStrategy(PlatformClientStrategy):    
+class TestWindowsClientStrategy(PlatformClientStrategy):    
     @property
     def mac(self):
         try:
-            # Get the MAC address on Linux
-            with open(f'/sys/class/net/eth0/address') as file:
-                mac_address = file.read().strip()
+            mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(5, -1, -1)])
             return mac_address
         except Exception as e:
-            print(f"Error getting MAC address on Linux: {e}")
+            print(f"Error getting MAC address on Windows: {e}")
             return None
     
     @property

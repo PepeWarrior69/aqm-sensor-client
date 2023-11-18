@@ -3,6 +3,7 @@ from typing import List
 from model import Packet
 from service import HttpService
 from strategy.sensor import SensorStrategy
+import json
 
 class PlatformClientStrategy(ABC):
     def __init__(self, url: str):
@@ -43,10 +44,10 @@ class PlatformClientStrategy(ABC):
     
     def send_packet(self):
         try:
-            packet = self.packet.packet_data
+            data = json.dumps(self.packet.packet_data)
             self.packet = Packet(self.mac, self.ip)
             
-            if self.http.post(packet):
+            if self.http.post(data):
                 
                 return True
         except Exception as err:

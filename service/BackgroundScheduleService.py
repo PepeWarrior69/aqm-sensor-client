@@ -15,7 +15,7 @@ class BackgroundScheduleService:
         print("BackgroundScheduleService cleanup is finished")
         
     def add_background_job(self, job, seconds) -> str:
-        id = str(uuid.uuid4())
+        id = str(uuid.uuid4())[0:8]
         
         scheduler = BackgroundScheduler()
         scheduler.add_job(job, 'interval', seconds=seconds)

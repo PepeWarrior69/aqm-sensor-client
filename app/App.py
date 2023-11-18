@@ -1,11 +1,13 @@
 from strategy.context.PlatformContext import PlatformContext
-from strategy.platform import TestLinuxClientStrategy, RaspberryClientStrategy, ArduineClientStrategy
-from config import endpoint_url
+from strategy.platform import PlatformClientStrategy, TestLinuxClientStrategy, TestWindowsClientStrategy, RaspberryClientStrategy, ArduineClientStrategy
+from config import ENDPOINT_URL
+from typing import Dict
 import argparse
 import time
 
-platform_strategy = {
+platform_strategy: Dict[str, PlatformClientStrategy] = {
     "test_linux": TestLinuxClientStrategy,
+    "test_windows": TestWindowsClientStrategy,
     "raspberry_pi": RaspberryClientStrategy,
     "arduine": ArduineClientStrategy
 }
@@ -19,8 +21,6 @@ class App:
         )
         
         self.platform_context.start()
-        print("read_bg_service_id = ", self.platform_context.read_bg_service_id)
-        print("http_bg_service_id = ", self.platform_context.http_bg_service_id)
         
         # prevent application exit
         while True:
@@ -38,5 +38,5 @@ class App:
         if not Strategy:
             raise Exception(f"Strategy for platform {platform=} is not found")
         
-        return Strategy(endpoint_url) # TODO move url to env
+        return Strategy(ENDPOINT_URL)
 
