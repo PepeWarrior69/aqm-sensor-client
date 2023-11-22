@@ -1,5 +1,9 @@
 from .abstraction import SensorStrategy
 
 class TemperatureSensorStrategy(SensorStrategy):
-    def test_sensor():
+    @property
+    def type(self):
+        return "temperature"
+    
+    def read_data(self) -> dict:
         pass

@@ -1,10 +1,8 @@
 from dataclasses import dataclass, asdict
 from typing import List, Dict, Union
-import uuid
 
 @dataclass
 class PacketData:
-    id: str
     mac: str
     ip: str
     body: Dict[
@@ -16,7 +14,7 @@ class PacketData:
 
 class Packet:
     def __init__(self, mac, ip):
-        self._packet_data = PacketData(str(uuid.uuid4()), mac, ip, {})
+        self._packet_data = PacketData(mac, ip, {})
         
     def add(self, sensor_id: str, type: str, sensor_data: dict):
         body = self._packet_data.body

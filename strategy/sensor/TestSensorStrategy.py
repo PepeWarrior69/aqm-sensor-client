@@ -5,7 +5,7 @@ import random
 class TestSensorStrategy(SensorStrategy):
     @property
     def type(self):
-        return "test_sensor"
+        return "test"
     
     def read_data(self):
         return {

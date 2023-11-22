@@ -49,10 +49,9 @@ class PlatformClientStrategy(ABC):
             self.packet = Packet(self.mac, self.ip)
             
             if self.http.post(data):
-                
                 return True
         except Exception as err:
-            print("Error occured during _send_packet err=", err)
+            print("Error occured during send_packet err=", err)
             
             return False
 

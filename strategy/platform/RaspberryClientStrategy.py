@@ -1,5 +1,13 @@
 from .abstraction import PlatformClientStrategy
 
 class RaspberryClientStrategy(PlatformClientStrategy):
-    def test():
+    @property
+    def mac(self):
+        pass
+    
+    @property
+    def ip(self):
+        pass
+        
+    def add_connected_sensors(self):
         pass

@@ -7,7 +7,7 @@ class TestLinuxClientStrategy(PlatformClientStrategy):
     @property
     def mac(self):
         try:
-            # Get the MAC address on Linux
+            # Get the MAC address on Linux reading eth0 interface
             with open(f'/sys/class/net/eth0/address') as file:
                 mac_address = file.read().strip()
             return mac_address
