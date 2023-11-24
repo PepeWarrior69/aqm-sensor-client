@@ -1,6 +1,6 @@
 from service import BackgroundScheduleService
 from strategy.platform.abstraction import PlatformClientStrategy
-from config import SENSOR_READ_FREYENCY_SEC, SEND_DATA_FREQUENCY_SEC
+from config import SENSOR_READ_FREQUENCY_SEC, SEND_DATA_FREQUENCY_SEC
 
 class PlatformContext:
     def __init__(self, strategy: PlatformClientStrategy):
@@ -10,7 +10,7 @@ class PlatformContext:
     
     def start(self):
         try:
-            self.read_bg_service_id = self.setup_bg_service(self.strategy.read, SENSOR_READ_FREYENCY_SEC)
+            self.read_bg_service_id = self.setup_bg_service(self.strategy.read, SENSOR_READ_FREQUENCY_SEC)
             self.http_bg_service_id = self.setup_bg_service(self.strategy.send_packet, SEND_DATA_FREQUENCY_SEC)
             print("read_bg_service_id = ", self.read_bg_service_id)
             print("http_bg_service_id = ", self.http_bg_service_id)
