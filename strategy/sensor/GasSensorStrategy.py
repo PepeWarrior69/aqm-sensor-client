@@ -20,25 +20,10 @@ class GasSensorStrategy(SensorStrategy):
     def type(self):
         return "gas"
     
-    def read_data(self) -> dict:
-        print(f"============================ gas sensor value = {GPIO.input(OUTPUT_PIN)}")
-        print("GPIO.LOW = ", GPIO.LOW)
-        print("GPIO.HIGH = ", GPIO.HIGH)
-        
-        value = 0
-
-        if GPIO.input(OUTPUT_PIN) == GPIO.LOW:
-            value = 1
-            print("Gas detected!")
-        elif GPIO.input(OUTPUT_PIN) == GPIO.HIGH:
-            value = 2
-            print("Gas detected!")
-        else:
-            print("No gas detected.")
-        
+    def read_data(self) -> dict:        
         return {
             "ts": int(time.time()),
-            "value": value
+            "value": GPIO.input(OUTPUT_PIN) # GPIO.LOW = 0; GPIO.HIGH = 1 
         }
     
     def cleanup(self):
