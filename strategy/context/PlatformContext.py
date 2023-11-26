@@ -7,8 +7,14 @@ class PlatformContext:
         self.bg_service = BackgroundScheduleService()
         self.strategy = strategy
         print(f"platform MAC={strategy.mac} IP={strategy.ip}")
+        
+    def __del__(self):
+        print("Destructor of PlatformContext runs")
     
     def start(self):
+        if len(self.strategy.sensors) < 1:
+            raise Exception("No sensors detected. exiting...")
+        
         try:
             self.read_bg_service_id = self.setup_bg_service(self.strategy.read, SENSOR_READ_FREQUENCY_SEC)
             self.http_bg_service_id = self.setup_bg_service(self.strategy.send_packet, SEND_DATA_FREQUENCY_SEC)

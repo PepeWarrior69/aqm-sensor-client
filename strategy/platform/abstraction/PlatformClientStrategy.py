@@ -55,5 +55,8 @@ class PlatformClientStrategy(ABC):
             
             return False
 
-
+    def cleanup(self):
+        for sensor in self.sensors:
+            sensor.cleanup()
+    
     

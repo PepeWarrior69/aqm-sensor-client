@@ -28,7 +28,7 @@ class App:
 
     def parse_arguments(self):
         parser = argparse.ArgumentParser(description='Example script with named arguments')
-        parser.add_argument('--platform', type=str, help='Specify the platform (e.g., raspberry, pc, arduino, test_linux, test_windows)')
+        parser.add_argument('--platform', type=str, help='Specify the platform (e.g., raspberry_pi, arduine, test_linux, test_windows)')
         self.args = parser.parse_args()
         
     def get_strategy_from_platform(self, platform: str):

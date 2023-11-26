@@ -12,3 +12,6 @@ class TestSensorStrategy(SensorStrategy):
             "ts": int(time.time()),
             "value": random.randrange(400, 1000)
         }
+    
+    def cleanup(self):
+        pass

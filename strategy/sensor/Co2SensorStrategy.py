@@ -7,3 +7,6 @@ class Co2SensorStrategy(SensorStrategy):
     
     def read_data(self) -> dict:
         pass
+
+    def cleanup(self):
+        pass

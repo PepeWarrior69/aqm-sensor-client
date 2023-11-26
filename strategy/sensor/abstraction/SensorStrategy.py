@@ -14,3 +14,7 @@ class SensorStrategy(ABC):
     def read_data(self) -> dict:
         pass
     
+    @abstractmethod
+    def cleanup(self):
+        pass
+    
