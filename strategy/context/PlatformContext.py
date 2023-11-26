@@ -9,7 +9,8 @@ class PlatformContext:
         print(f"platform MAC={strategy.mac} IP={strategy.ip}")
         
     def __del__(self):
-        print("Destructor of PlatformContext runs")
+        self.strategy.cleanup()
+        print("Destructor of PlatformContext finished cleanup")
     
     def start(self):
         if len(self.strategy.sensors) < 1:
