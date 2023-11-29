@@ -21,9 +21,9 @@ class HttpService:
                 
                 return True
             else:
-                raise Exception(res)
+                raise Exception(res.json())
         except Exception as err:
-            print(f"Error in http request res=", err)
+            print(f"Error in http request err=", err)
         
         return False
 

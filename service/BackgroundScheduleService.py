@@ -12,6 +12,8 @@ class BackgroundScheduleService:
             job["handle"].shutdown()
             print(f"Job with id={job['id']} is stopped")
         
+        self.schedule_jobs = []
+        
         print("BackgroundScheduleService cleanup is finished")
         
     def add_background_job(self, job, seconds) -> str:

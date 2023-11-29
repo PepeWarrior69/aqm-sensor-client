@@ -9,8 +9,12 @@ class PlatformContext:
         print(f"platform MAC={strategy.mac} IP={strategy.ip}")
         
     def __del__(self):
-        self.strategy.cleanup()
+        self.cleanup()
         print("Destructor of PlatformContext finished cleanup")
+        
+    def cleanup(self):
+        self.strategy.cleanup()
+        self.bg_service.cleanup()
     
     def start(self):
         if len(self.strategy.sensors) < 1:

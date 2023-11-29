@@ -13,18 +13,28 @@ platform_factory: Dict[str, PlatformClientFactory] = {
 }
 
 class App:
-    def main(self):
-        self.parse_arguments()
+    def __init__(self) -> None:
+        self.platform_context = None
+    
+    def main(self, endpoint_url=ENDPOINT_URL, platform=None, prevent_exit=True):
+        self.endpoint_url = endpoint_url
+        
+        if not platform: 
+            self.parse_arguments()
+            platform = self.args.platform
+        
         self.platform_context = PlatformContext(
-            self.get_strategy_from_platform(self.args.platform)
+            self.get_strategy_from_platform(platform)
         )
         
         self.platform_context.start()
         
-        # prevent application exit
-        while True:
-            time.sleep(1)
+        if prevent_exit:
+            while True:
+                time.sleep(1)
 
+    def cleanup(self):
+        self.platform_context.cleanup()
 
     def parse_arguments(self):
         parser = argparse.ArgumentParser(description='Example script with named arguments')
@@ -34,7 +44,7 @@ class App:
     def get_strategy_from_platform(self, platform: str):
         if platform in platform_factory:
             print(f"Creating client for {platform=}")
-            return platform_factory[platform].create_platform_client(ENDPOINT_URL)
+            return platform_factory[platform].create_platform_client(self.endpoint_url)
         
         raise Exception(f"Strategy for platform {platform=} is not supported")
         
