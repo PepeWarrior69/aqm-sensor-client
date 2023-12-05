@@ -1,5 +1,6 @@
 from time import sleep
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from threading import Thread
 from app import App
@@ -43,6 +44,14 @@ def get_app_wrapper() -> AppWrapper:
 
 
 server_app = FastAPI()
+
+server_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[ "*" ],
+    allow_credentials=True,
+    allow_methods=[ "*" ],
+    allow_headers=[ "*" ]
+)
 
 class InitPayload(BaseModel):
     endpoint_url: str
