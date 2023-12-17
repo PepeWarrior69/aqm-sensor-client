@@ -17,7 +17,7 @@
 git clone https://github.com/PepeWarrior69/atmo-sense-sensor-client.git
 ```
 ```bash
-cd aqm-sensor-client
+cd atmo-sense-sensor-client
 ```
 **Install Dependencies**
 ```bash
