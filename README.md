@@ -2,7 +2,7 @@
   <a href="https://github.com/DAWN-LV/aqm-backend" target="blank"><img src="https://github.com/DAWN-LV/aqm-backend/blob/master/src/common/images/Logo.png?raw=true" width="200" alt="AQM Logo" /></a>
 </p>
 
-# AQM-SENSOR-CLIENT
+# ATMO-SENSE-SENSOR-CLIENT
 **This software is running on Raspberry Pi**
 
 ### Area Of Responsibility
