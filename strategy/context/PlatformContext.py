@@ -6,7 +6,7 @@ class PlatformContext:
     def __init__(self, strategy: PlatformClientStrategy):
         self.bg_service = BackgroundScheduleService()
         self.strategy = strategy
-        print(f"platform MAC={strategy.mac} IP={strategy.ip}")
+        print(f"platform MAC={strategy.mac} | external_ip={strategy.external_ip} | internal_ip={strategy.internal_ip}")
         
     def __del__(self):
         self.cleanup()

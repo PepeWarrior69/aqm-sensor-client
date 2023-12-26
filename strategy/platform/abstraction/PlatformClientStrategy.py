@@ -3,13 +3,15 @@ from typing import List
 from model import Packet
 from service import HttpService
 from strategy.sensor import SensorStrategy
+from requests import get
 import json
+import socket
 
 class PlatformClientStrategy(ABC):
     def __init__(self, url: str):
         self.sensors: List[SensorStrategy] = []
         self.http = HttpService(url)
-        self.packet = Packet(self.mac, self.ip)
+        self.packet = Packet(self.mac, self.external_ip)
         self.add_connected_sensors()
         
     @property
@@ -18,9 +20,24 @@ class PlatformClientStrategy(ABC):
         pass
     
     @property
-    @abstractmethod
-    def ip() -> str:
-        pass
+    def external_ip(self) -> str:
+        try:
+            return get('https://api.ipify.org').content.decode('utf8')
+        except Exception as e:
+            print(f"Error getting External IP address: {e}")
+            return None
+    
+    @property
+    def internal_ip(self) -> str:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            s.connect(('192.255.255.255', 1))
+            ip = s.getsockname()[0]
+        except:
+            ip = None
+        finally:
+            s.close()
+        return ip
     
     @abstractmethod
     def add_connected_sensors(self):

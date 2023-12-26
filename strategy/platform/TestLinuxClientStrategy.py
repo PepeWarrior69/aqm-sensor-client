@@ -1,6 +1,4 @@
 from strategy.platform import PlatformClientStrategy
-import socket
-
 from strategy.sensor import TestSensorStrategy
 
 class TestLinuxClientStrategy(PlatformClientStrategy):    
@@ -13,17 +11,6 @@ class TestLinuxClientStrategy(PlatformClientStrategy):
             return mac_address
         except Exception as e:
             print(f"Error getting MAC address on Linux: {e}")
-            return None
-    
-    @property
-    def ip(self):
-        try:
-            host_name = socket.gethostname()
-            ip_address = socket.gethostbyname(host_name)
-            
-            return ip_address
-        except socket.error as e:
-            print(f"Error getting IP address: {e}")
             return None
         
     def add_connected_sensors(self):
