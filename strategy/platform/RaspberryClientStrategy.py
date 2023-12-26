@@ -1,4 +1,4 @@
-from strategy.sensor import GasSensorStrategy
+from strategy.sensor import MQ2GasSensorStrategy
 from .abstraction import PlatformClientStrategy
 import socket
 import uuid
@@ -19,5 +19,5 @@ class RaspberryClientStrategy(PlatformClientStrategy):
         
     def add_connected_sensors(self):
         self.sensors.append(
-            GasSensorStrategy()
+            MQ2GasSensorStrategy()
         )

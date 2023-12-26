@@ -10,7 +10,7 @@ import time
 
 OUTPUT_PIN = 14
 
-class GasSensorStrategy(SensorStrategy):
+class MQ2GasSensorStrategy(SensorStrategy):
     def __init__(self):
         super().__init__()
         GPIO.setmode(GPIO.BCM)
