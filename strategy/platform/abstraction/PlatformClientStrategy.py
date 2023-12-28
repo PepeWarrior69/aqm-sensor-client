@@ -63,7 +63,7 @@ class PlatformClientStrategy(ABC):
         try:
             # print("self.packet.packet_data = ", json.dumps(self.packet.packet_data, indent=2))
             data = json.dumps(self.packet.packet_data)
-            self.packet = Packet(self.mac, self.ip)
+            self.packet = Packet(self.mac, self.external_ip)
             
             if self.http.post(data):
                 return True
