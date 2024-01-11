@@ -24,6 +24,7 @@ def get_app_meta():
 
 def send_app_meta():
     meta = get_app_meta()
+    print(f'Attempt send {meta=}')
     client.publish(f'{TOPIC_BASE}/meta', meta)
 
 def handle_app_init(payload: str):
@@ -61,8 +62,8 @@ def on_connect(client, userdata, flags, rc):
 def on_connect_fail(client, userdata, flags, rc):
     print(f'[on_connect_fail] {flags=} {rc=}')
     
-def on_disconnect(client, userdata, flags, rc):
-    print(f'[on_disconnect] {flags=} {rc=}')
+def on_disconnect(client, userdata, rc):
+    print(f'[on_disconnect] {rc=}')
 
 # def on_log(*args):
 #     print('[on_log] on_log: ', args)
@@ -118,13 +119,14 @@ try:
     while True:
         sleep(10)
         is_connected = client.is_connected()
-        print(f'MQTT {is_connected=}')
         
         if not is_connected:
+            print("Attempt MQTT reconnect")
             reconn_res = client.reconnect()
             print("Reconnection response: ", reconn_res)
         
         count += 1
+            
         if count >= 60:
             # send metadata every 10 minutes
             send_app_meta()
