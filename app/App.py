@@ -1,6 +1,6 @@
 from factory.platform import PlatformClientFactory, TestLinuxClientFactory, TestWindowsClientFactory, RaspberryClientFactory, ArduineClientFactory
 from strategy.context.PlatformContext import PlatformContext
-from config import ENDPOINT_URL
+from config import ENDPOINT_URL, PLATFORM
 from typing import Dict
 import argparse
 import time
@@ -13,19 +13,18 @@ platform_factory: Dict[str, PlatformClientFactory] = {
 }
 
 class App:
-    def __init__(self) -> None:
-        self.platform_context = None
+    def __init__(self, endpoint_url=ENDPOINT_URL, platform=PLATFORM) -> None:
+        self.endpoint_url = endpoint_url
+        self.platform_context = PlatformContext(
+            self.get_strategy_from_platform(platform)
+        )
     
-    def main(self, endpoint_url=ENDPOINT_URL, platform=None, prevent_exit=True):
+    def main(self, endpoint_url=ENDPOINT_URL, platform=PLATFORM, prevent_exit=True):
         self.endpoint_url = endpoint_url
         
         if not platform: 
             self.parse_arguments()
             platform = self.args.platform
-        
-        self.platform_context = PlatformContext(
-            self.get_strategy_from_platform(platform)
-        )
         
         self.platform_context.start()
         
