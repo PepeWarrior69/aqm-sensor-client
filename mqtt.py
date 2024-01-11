@@ -17,6 +17,15 @@ client = mqtt.Client(
 last_known_endpoint = ENDPOINT_URL
 platform = PLATFORM
 
+def get_app_meta():
+    internal_ip = app_wrapper.sensor_app.platform_context.strategy.internal_ip
+    external_ip = app_wrapper.sensor_app.platform_context.strategy.external_ip
+    return f'{platform}|{last_known_endpoint}|{app_wrapper.state}|{internal_ip}|{external_ip}'
+
+def send_app_meta():
+    meta = get_app_meta()
+    client.publish(f'{TOPIC_BASE}/meta', meta)
+
 def handle_app_init(payload: str):
     if app_wrapper.state == 'active':
         return
@@ -26,18 +35,21 @@ def handle_app_init(payload: str):
     last_known_endpoint = args[0]
     platform = args[1]
     app_wrapper.start(last_known_endpoint, platform)
-    client.publish(f'{TOPIC_BASE}/status', app_wrapper.state)
+    # client.publish(f'{TOPIC_BASE}/status', app_wrapper.state)
+    send_app_meta()
     
 
 def handle_app_restart():
     client.publish(f'{TOPIC_BASE}/status', 'restarting')
     app_wrapper.stop()
     app_wrapper.start(last_known_endpoint, platform)
-    client.publish(f'{TOPIC_BASE}/status', app_wrapper.state)
+    # client.publish(f'{TOPIC_BASE}/status', app_wrapper.state)
+    send_app_meta()
 
 def handle_app_deinit():
     app_wrapper.stop()
-    client.publish(f'{TOPIC_BASE}/status', app_wrapper.state)
+    # client.publish(f'{TOPIC_BASE}/status', app_wrapper.state)
+    send_app_meta()
 
 
 def on_connect(client, userdata, flags, rc):
@@ -98,18 +110,26 @@ try:
     client.subscribe(f'{TOPIC_BASE}/init')
     client.subscribe(f'{TOPIC_BASE}/restart')
     client.subscribe(f'{TOPIC_BASE}/deinit')
-    client.subscribe(f'{TOPIC_BASE}/status')
     
     client.loop_start()
+    
+    count = 0
     
     while True:
         sleep(10)
         is_connected = client.is_connected()
-        print('MQTT is_connected = ', is_connected)
+        print(f'MQTT {is_connected=}')
         
         if not is_connected:
             reconn_res = client.reconnect()
             print("Reconnection response: ", reconn_res)
+        
+        count += 1
+        if count >= 60:
+            # send metadata every 10 minutes
+            send_app_meta()
+            count = 0
+        
 except Exception as err:
     client.loop_stop()
     print(err)

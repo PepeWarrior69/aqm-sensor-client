@@ -9,6 +9,8 @@ import socket
 
 class PlatformClientStrategy(ABC):
     def __init__(self, url: str):
+        self._internal_ip = None
+        self._external_ip = None
         self.sensors: List[SensorStrategy] = []
         self.http = HttpService(url)
         self.packet = Packet(self.mac, self.external_ip)
@@ -22,22 +24,28 @@ class PlatformClientStrategy(ABC):
     @property
     def external_ip(self) -> str:
         try:
-            return get('https://api.ipify.org').content.decode('utf8')
+            if not self._external_ip:
+                self._external_ip = get('https://api.ipify.org').content.decode('utf8')
+            
+            return self._external_ip
         except Exception as e:
             print(f"Error getting External IP address: {e}")
             return None
     
     @property
     def internal_ip(self) -> str:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        try:
-            s.connect(('192.255.255.255', 1))
-            ip = s.getsockname()[0]
-        except:
-            ip = None
-        finally:
-            s.close()
-        return ip
+        if not self._internal_ip:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            try:
+                s.connect(('192.255.255.255', 1))
+                ip = s.getsockname()[0]
+            except:
+                ip = None
+            finally:
+                s.close()
+            self._internal_ip = ip
+        
+        return self._internal_ip
     
     @abstractmethod
     def add_connected_sensors(self):
