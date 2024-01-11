@@ -26,10 +26,14 @@ def get_app_meta():
 def send_app_meta():
     meta = get_app_meta()
     print(f'Attempt send {meta=}')
-    client.publish(f'{TOPIC_BASE}/meta', meta)
+    try:
+        res = client.publish(f'{TOPIC_BASE}/meta', meta)
+        print('res = ', res)
+    except Exception as err:
+        print(f'Error during publish meta: err = ', err)
 
 def handle_app_init(payload: str):
-    if app_wrapper.state == 'active':
+    if app_wrapper.state == 'ACTIVE':
         return
 
     args = payload.split("|") # 0 = endpoint; 1 = platform
@@ -42,7 +46,6 @@ def handle_app_init(payload: str):
     
 
 def handle_app_restart():
-    client.publish(f'{TOPIC_BASE}/status', 'restarting')
     app_wrapper.stop()
     app_wrapper.start(last_known_endpoint, platform)
     # client.publish(f'{TOPIC_BASE}/status', app_wrapper.state)
