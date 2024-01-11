@@ -1,4 +1,5 @@
 from socket import socket
+import uuid
 import paho.mqtt.client as mqtt
 from time import sleep
 from config.config import PLATFORM, ENDPOINT_URL, MQTT
@@ -10,7 +11,7 @@ MAC = app_wrapper.sensor_app.platform_context.strategy.mac
 TOPIC_BASE = f'sensor/{MAC}'
 
 client = mqtt.Client(
-    client_id='test',
+    client_id=f'{MAC}_{str(uuid.uuid4())[0:8]}',
     clean_session=True
 )
 
